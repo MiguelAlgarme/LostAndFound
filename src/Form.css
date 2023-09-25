@@ -1,0 +1,82 @@
+.create{
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
+}
+
+.create label {
+    text-align: left;
+    display: block;
+}
+
+.create h2{
+    font-size: 50px;
+    color: white;
+    margin-bottom: 30px;
+}
+
+.create input, .create textarea, .create select {
+    width: 400px;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #000000;  /*Edit this*/
+    box-sizing: border-box;
+    display: block;
+
+}
+.create .FormButton{
+    position: relative;
+}
+.create button {
+
+    position: relative;
+    background: rgb(5, 5, 5);
+    color: rgb(238, 235, 235);
+    border: 0;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100px;
+    height: 100%;
+}
+.create button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 300%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 25%,
+      #f0f0f0 50%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1s infinite linear;
+    border-radius: 10px;
+    opacity: 0; 
+  }
+  
+  /* Apply shimmer only when button is loading Disabled if loading is false and enabled if it is*/
+  .create button:disabled:before {
+    opacity: 1;
+    animation: shimmer 2s infinite linear;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    } 
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  /*Shimmer End*/
+
+/* TOASTIFY YUM */
+.Toastify__close-button {
+    background-color: transparent!important;
+}
