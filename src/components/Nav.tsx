@@ -9,7 +9,7 @@ export default function Nav() {
   return (
     <nav className="nav">
       <Link to="/" className="site-title text-">
-        Nexus
+        WANDERLOST
       </Link>
       <ul>
         <CustomLink to="/Home">
