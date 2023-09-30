@@ -37,10 +37,11 @@ function App() {
       <Nav />
       <div className="container1">
         <Routes>
-          <Route path="/Landing" element={<PreLoader />} />
+          <Route path="/" element={<PreLoader />} />
+          <Route path="/Home" element={<Home />} />
+          <Route path="/Profile" element={<Profile />} />
           <Route path="/Form" element={<Form />} />
           <Route path="/About" element={<About />} />
-          <Route path="/Profile" element={<Profile />} />
         </Routes>
       </div>
 

@@ -10,7 +10,7 @@ function PreLoader() {
   return (
     <>
       <div className="preloader">
-        <div className="text-container">
+        <div className="texts-container">
           <span>Catch</span>
           <span>A</span>
           <span>Break</span>

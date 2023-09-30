@@ -14,7 +14,7 @@
     overflow: hidden;
 }
 
-.preloader .text-container {
+.preloader .texts-container {
     display:flex;
     align-items: center;
     justify-content: space-between;
