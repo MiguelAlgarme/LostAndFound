@@ -11,9 +11,10 @@ function PreLoader() {
     <>
       <div className="preloader">
         <div className="texts-container">
-          <span>Catch</span>
-          <span>A</span>
-          <span>Break</span>
+      
+          <span>Welcome</span>
+          <span>To</span>
+          <span>Wonderlost</span>
         </div>
       </div>
     </>

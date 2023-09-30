@@ -1,10 +1,14 @@
 import React from "react";
+//import Login from "../components/Login";
 
-export default function Profile() {
+export const Profile = () => {
   return (
     <div>
-      <h1>PROFILE</h1>
-      <p>this section is a work in progress</p>
+      <h1>Login</h1>
+      <p>Temporary for now, still testing</p>
+      {/*<Login />*/}
     </div>
   );
-}
+};
+
+export default Profile;
