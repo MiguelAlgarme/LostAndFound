@@ -37,6 +37,7 @@ const Form = () => {
         theme="light"
       />
       <h2>CREATION</h2>
+      <p>Send us anything</p>
       <form onSubmit={handleSubmit}>
         <label>First Name</label>
         <input
@@ -52,19 +53,19 @@ const Form = () => {
         <input type="text" required />
 
         <label>Age</label>
-        <input type="number" />
+        <input type="number" required />
 
         <label>Email</label>
-        <input type="email" />
+        <input type="email" required />
 
         <label>Phone Number</label>
-        <input type="number" />
+        <input type="number" required />
 
         <label>University</label>
         <input type="text" />
 
         <label>ID</label>
-        <input type="file" />
+        <input type="file" required />
         <div className="FormButton">
           <button className="button" type="submit" disabled={isLoading}>
             {isLoading ? <div className="shimmer">Loading...</div> : "Submit"}

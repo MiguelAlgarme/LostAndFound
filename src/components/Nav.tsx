@@ -1,7 +1,7 @@
 import React, { Children } from "react";
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse } from "@fortawesome/free-solid-svg-icons";
+import { faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 
 //BTW IN THE FontAwesomeIcon tag you can add an effect on the icon HOORAHHHHHH!!!
 
@@ -9,16 +9,24 @@ export default function Nav() {
   return (
     <nav className="nav">
       <Link to="/" className="site-title text-">
-        WANDERLOST
+        <b>WANDERLOST</b>
       </Link>
       <ul>
         <CustomLink to="/Home">
-          <FontAwesomeIcon icon={faHouse} />
+          <FontAwesomeIcon icon={faHouse} size="xl" />
         </CustomLink>
 
-        <CustomLink to="/Form">Form</CustomLink>
+        <CustomLink to="/Profile">
+          <FontAwesomeIcon icon={faUser} size="xl" />
+        </CustomLink>
 
-        <CustomLink to="/About">About</CustomLink>
+        <CustomLink to="/Form">
+          <b>Form</b>
+        </CustomLink>
+
+        <CustomLink to="/About">
+          <b>About</b>
+        </CustomLink>
       </ul>
     </nav>
   );

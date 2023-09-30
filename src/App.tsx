@@ -9,6 +9,7 @@ import Nav from "./components/Nav";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Form from "./pages/CreateForm";
+import Profile from "./pages/Profile";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -39,6 +40,7 @@ function App() {
           <Route path="/Home" element={<Home />} />
           <Route path="/Form" element={<Form />} />
           <Route path="/About" element={<About />} />
+          <Route path="/Profile" element={<Profile />} />
         </Routes>
       </div>
 
