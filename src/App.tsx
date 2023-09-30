@@ -10,6 +10,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Form from "./pages/CreateForm";
 import Profile from "./pages/Profile";
+import PreLoader from "./pages/PreLoader.jsx";
 import { Route, Routes } from "react-router-dom";
 
 function App() {
@@ -36,8 +37,7 @@ function App() {
       <Nav />
       <div className="container1">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Home" element={<Home />} />
+          <Route path="/Landing" element={<PreLoader />} />
           <Route path="/Form" element={<Form />} />
           <Route path="/About" element={<About />} />
           <Route path="/Profile" element={<Profile />} />
