@@ -1,14 +1,12 @@
 import React from "react";
-//import Login from "../components/Login";
-
+import Login from "../components/Login";
+import Register from "../components/Register";
 export const Profile = () => {
   return (
     <div>
-      <h1>Login</h1>
-      <p>Temporary for now, still testing</p>
-      {/*<Login />*/}
+      <Login />
+      <Register />
     </div>
   );
 };
-
 export default Profile;

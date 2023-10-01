@@ -1,0 +1,91 @@
+
+.Login_Container {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+ 
+  .Login_Container label {
+    text-align: left;
+    display: block;
+  }
+  
+ 
+  .Login_Container h2 {
+    font-size: 50px;
+    color: white;
+    margin-bottom: 30px;
+  }
+  
+ 
+  .Login_Container input,
+  .Login_Container textarea,
+  .Login_Container select {
+    width: 400px;
+    padding: 6px 10px;
+    margin: 10px 0;
+    border: 1px solid #000000;
+    box-sizing: border-box;
+    display: block;
+  }
+  
+
+  .FormButton {
+    position: relative;
+  }
+  
+ 
+  .FormButton button {
+    position: relative;
+    background: rgb(5, 5, 5);
+    color: rgb(238, 235, 235);
+    border: 0;
+    padding: 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    width: 100px;
+    height: 100%;
+  }
+  
+.FormButton button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 300%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent 25%,
+      #f0f0f0 50%,
+      transparent 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1s infinite linear;
+    border-radius: 10px;
+    opacity: 0; 
+  }
+  
+  
+  .FormButton button:disabled:before {
+    opacity: 1;
+    animation: shimmer 2s infinite linear;
+  }
+  
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    } 
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  /*Shimmer End*/
+
+/* TOASTIFY YUM */
+.Toastify__close-button {
+    background-color: transparent!important;
+}
