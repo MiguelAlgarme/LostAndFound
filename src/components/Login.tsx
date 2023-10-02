@@ -16,14 +16,16 @@ const validate = yup.object().shape({
     .required("Email is required"),
   password: yup.string().required("Password is required"),
 });
-const [formErrors, setFormErrors] = useState({});
 
 function Login() {
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
   });
-
+  const [formErrors, setFormErrors] = useState({
+    email: "",
+    password: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -47,11 +49,10 @@ function Login() {
         });
         setTimeout(() => {
           setIsLoading(false);
-          // User is authenticated, perform a redirect
-          // e.g., history.push('/profile');
+          //Redirect insert hereeeeeee
         }, 2000);
-      } else {
-        toast.error("Login Error", {
+      } else if (response.status === 401) {
+        toast.error("Invalid Credentials", {
           position: toast.POSITION.TOP_RIGHT,
         });
         setTimeout(() => {
@@ -75,10 +76,7 @@ function Login() {
   ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-
-    const handleChange = (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => {
+    {
       const { name, value } = event.target;
       setFormData((prevData) => ({ ...prevData, [name]: value }));
 
@@ -92,7 +90,7 @@ function Login() {
 
         setFormErrors({ ...formErrors, [name]: error.message });
       }
-    };
+    }
   };
 
   return (
@@ -120,6 +118,10 @@ function Login() {
           onChange={handleChange}
           required
         />
+        {formErrors.email && (
+          <div className="error-message">{formErrors.email}</div>
+        )}
+
         <label>Password</label>
         <input
           type="password"
@@ -129,6 +131,9 @@ function Login() {
           onChange={handleChange}
           required
         />
+        {formErrors.password && (
+          <div className="error-message">{formErrors.password}</div>
+        )}
         <div className="FormButton">
           <button className="button" type="submit" disabled={isLoading}>
             {isLoading ? <div className="shimmer">Loading...</div> : "Login"}

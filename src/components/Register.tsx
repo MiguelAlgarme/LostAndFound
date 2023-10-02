@@ -61,7 +61,9 @@ function Register() {
       toast.error("Passwords do not match", {
         position: toast.POSITION.TOP_RIGHT,
       });
-      setIsLoading(false);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
       return;
     }
     //PASSWORD CONFIRMATIONN
