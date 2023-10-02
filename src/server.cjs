@@ -60,7 +60,7 @@ app.post('/api/register', async (req, res) => {
 
 
 
-
+//LOGIN CAN NOW VERIFY IF ON DATABASE, but needs improvement on some areas.
 app.post('/api/login', async (req, res) => {
   console.log('Received login request');
   try {
