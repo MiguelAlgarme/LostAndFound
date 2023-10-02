@@ -22,7 +22,7 @@ async function registerUser(firstName, lastName, plainPassword, email) {
   }
 }
 
-
+//NOT YET READY
 async function loginUser(email, providedPassword) {
   try {
     const user = await db.oneOrNone('SELECT * FROM users WHERE email = $1', [email]);

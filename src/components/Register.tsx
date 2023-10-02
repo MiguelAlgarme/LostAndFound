@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../Form.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import zxcvbn from "zxcvbn";
 
 interface RegistrationForm {
   firstName: string;
@@ -17,12 +18,53 @@ function Register() {
     email: "",
     password: "",
   });
+  //I found a problem where it would blink
+  //and not accept passwords that are not strong enough,
+  //but then blink to strong when only one letter will change
+  //I MIGHT try other libraries.
+  //PASSWORD STRENGTH
+
+  const [passwordStrength, setPasswordStrength] = useState("WEAK!");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newPassword = event.target.value;
+    setFormData((prevData) => ({ ...prevData, password: newPassword }));
+
+    const result = zxcvbn(newPassword);
+
+    setPasswordStrength(result.score >= 2 ? "Eh its ok I guess" : "WEAK!");
+  };
+  //PASSWORD STRENGTH
+
+  //PASSWORD STATE COLOR
+  const PassCo = () => {
+    switch (passwordStrength) {
+      case "WEAK!":
+        return "red";
+      case "Eh its ok I guess":
+        return "Green";
+      default:
+        return "white";
+    }
+  };
+  //PASSWORD STATE COLOR
 
   const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+
+    //PASSWORD CONFIRMATIONN
+    if (formData.password !== passwordConfirm) {
+      toast.error("Passwords do not match", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setIsLoading(false);
+      return;
+    }
+    //PASSWORD CONFIRMATIONN
 
     try {
       const response = await fetch("http://localhost:3000/api/register", {
@@ -35,12 +77,14 @@ function Register() {
 
       if (response.status === 200) {
         console.log("Registration successful");
-        toast.success("You have been registered!", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+
         setTimeout(() => {
           setIsLoading(false);
         }, 2000);
+
+        toast.success("You have been registered!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
 
         // Should add a redirect
       } else {
@@ -54,10 +98,6 @@ function Register() {
     } catch (error) {
       console.error("An error occurred:", error);
       setIsLoading(false);
-    } finally {
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
     }
   };
 
@@ -111,13 +151,40 @@ function Register() {
           onChange={handleChange}
           required
         />
+
+        <br />
         <label>Password</label>
+        {/*Creating a CSS for this is too tiresome, might as well put it here*/}
+        <div
+          className="password-strength"
+          style={{
+            color: PassCo(),
+            padding: "2px 2px",
+            margin: "4px 0",
+            fontSize: "16px",
+            fontWeight: "bold",
+            transition: "color 1.0s",
+          }}
+        >
+          {passwordStrength}
+        </div>
+
         <input
           type="password"
           name="password"
           placeholder="Password"
           value={formData.password}
-          onChange={handleChange}
+          onChange={handlePasswordChange}
+          required
+        />
+
+        <label>Confirm Password</label>
+        <input
+          type="password"
+          name="passwordConfirm"
+          placeholder="Confirm Password"
+          value={passwordConfirm}
+          onChange={(e) => setPasswordConfirm(e.target.value)}
           required
         />
         <div className="FormButton">

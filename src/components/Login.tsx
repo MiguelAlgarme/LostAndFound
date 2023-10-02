@@ -2,10 +2,21 @@ import React, { useState } from "react";
 import "../Login.css"; // Import your CSS for styling
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import * as yup from "yup";
+
 interface LoginForm {
   email: string;
   password: string;
 }
+
+const validate = yup.object().shape({
+  email: yup
+    .string()
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup.string().required("Password is required"),
+});
+const [formErrors, setFormErrors] = useState({});
 
 function Login() {
   const [formData, setFormData] = useState<LoginForm>({
@@ -64,6 +75,24 @@ function Login() {
   ) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+    const handleChange = (
+      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => {
+      const { name, value } = event.target;
+      setFormData((prevData) => ({ ...prevData, [name]: value }));
+
+      try {
+        validate.validateSyncAt(name, { [name]: value });
+
+        setFormErrors({ ...formErrors, [name]: undefined });
+      } catch (error: any) {
+        // ^^^^^^^^ This defeats the purpose of typescript btw
+        //typescript strict like ong
+
+        setFormErrors({ ...formErrors, [name]: error.message });
+      }
+    };
   };
 
   return (
