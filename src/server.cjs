@@ -2,18 +2,20 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const bcrypt = require('bcrypt'); // Import bcrypt
 const app = express();
-const db = require('./databasepg.cjs');
+const db = require('../databasepg.cjs');
+const cors = require('cors');
 app.use(bodyParser.json());
+app.use(cors());
 
 
-async function registerUser(firstName, lastName, email, plainPassword) {
+async function registerUser(firstName, lastName, plainPassword, email) {
   try {
     const hashedPassword = await bcrypt.hash(plainPassword, 10); 
     //more salt rounds mean more iterations so less hackas
 
     await db.none(
-      'INSERT INTO users (firstname, lastname, email, password) VALUES ($1, $2, $3, $4)',
-      [firstName, lastName, email, hashedPassword]
+      'INSERT INTO users (firstname, lastname, password, email) VALUES ($1, $2, $3, $4)',
+      [firstName, lastName, hashedPassword, email]
     );
   } catch (error) {
     throw error;
@@ -42,19 +44,21 @@ async function loginUser(email, providedPassword) {
   }
 }
 
-
 app.post('/api/register', async (req, res) => {
   try {
     const { firstName, lastName, email, password } = req.body;
+    console.log('Received registration request', { firstName, lastName, email });
+
     await registerUser(firstName, lastName, email, password);
 
-    // If registration is successful
+    console.log('Registration successful:', { email });
     res.status(200).json({ message: 'Registration successful' });
   } catch (error) {
-    // If registration fails
+    console.error('Registration failed:', error);
     res.status(500).json({ error: 'Registration failed' });
   }
 });
+``
 
 
 

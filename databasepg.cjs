@@ -8,10 +8,5 @@ const db = pgp({
   database: 'postgres'
 });
 
-db.any('SELECT * FROM users')
-  .then(data => {
-    console.log(data);
-  })
-  .catch(error => {
-    console.error(error);
-  });
+
+module.exports = db;

@@ -25,7 +25,7 @@ function Register() {
     setIsLoading(true);
 
     try {
-      const response = await fetch("/api/register", {
+      const response = await fetch("http://localhost:3000/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,10 +35,14 @@ function Register() {
 
       if (response.status === 200) {
         console.log("Registration successful");
+        toast.success("You have been registered!", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         setTimeout(() => {
           setIsLoading(false);
         }, 2000);
-        // Optionally, redirect the user to a login page or display a success message.
+
+        // Should add a redirect
       } else {
         toast.warning("Registration Error", {
           position: toast.POSITION.TOP_RIGHT,

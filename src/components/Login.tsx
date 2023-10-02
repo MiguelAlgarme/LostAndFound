@@ -21,7 +21,7 @@ function Login() {
 
     try {
       // Send a POST request to your server to authenticate the user
-      const response = await fetch("/api/login", {
+      const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -30,7 +30,10 @@ function Login() {
       });
 
       if (response.status === 200) {
-        console.log("Form submitted");
+        console.log("Login Success");
+        toast.success("You are logged in", {
+          position: toast.POSITION.TOP_RIGHT,
+        });
         setTimeout(() => {
           setIsLoading(false);
           // User is authenticated, perform a redirect
