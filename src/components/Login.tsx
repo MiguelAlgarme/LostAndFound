@@ -17,7 +17,15 @@ const validate = yup.object().shape({
   password: yup.string().required("Password is required"),
 });
 
-function Login() {
+interface User {
+  firstname: string;
+  lastname: string;
+}
+
+interface LoginProps {
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+}
+function Login({ setUser }: LoginProps) {
   const [formData, setFormData] = useState<LoginForm>({
     email: "",
     password: "",
@@ -32,17 +40,24 @@ function Login() {
     e.preventDefault();
     setIsLoading(true);
 
+    const { email, password } = formData;
+
     try {
-      // Send a POST request to your server to authenticate the user
       const response = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+        credentials: "include",
       });
 
       if (response.status === 200) {
+        const data = await response.json();
+        setUser(data.user);
         console.log("Login Success");
         toast.success("You are logged in", {
           position: toast.POSITION.TOP_RIGHT,

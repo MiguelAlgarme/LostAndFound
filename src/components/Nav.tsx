@@ -4,8 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faUser } from "@fortawesome/free-solid-svg-icons";
 
 //BTW IN THE FontAwesomeIcon tag you can add an effect on the icon HOORAHHHHHH!!!
+interface User {
+  name: string;
+}
 
-export default function Nav() {
+interface NavProps {
+  user: User | null; // Define the type for the user prop
+}
+export default function Nav({ user }: NavProps) {
   return (
     <nav className="nav">
       <Link to="/" className="site-title text-">
@@ -27,6 +33,7 @@ export default function Nav() {
         <CustomLink to="/About">
           <b>About</b>
         </CustomLink>
+        {user ? <b>You are {user.name}</b> : null}
       </ul>
     </nav>
   );

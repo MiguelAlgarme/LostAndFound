@@ -10,10 +10,12 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Form from "./pages/CreateForm";
 import Profile from "./pages/Profile";
-import PreLoader from "./pages/PreLoader.jsx";
+//import PreLoader from "./pages/PreLoader.jsx"; //YOU CAN IGNORE THIS, THIS IS JUST FOR ANIMATIONS
 import { Route, Routes } from "react-router-dom";
+import Logout from "./components/Logout";
 
 function App() {
+  const [user, setUser] = useState(null);
   const [alertVisible, setAlertVisibility] = useState(false); //Sets Alert visibility to hide
 
   let items = [
@@ -30,14 +32,13 @@ function App() {
   };
 
   let comp;
-
+  //  <Route path="/" element={<PreLoader />} /> ADD THIS TO ADD ANIMATIONS
   //Button Progress Checker
   return (
     <div>
-      <Nav />
+      <Nav user={user} />
       <div className="container1">
         <Routes>
-          <Route path="/" element={<PreLoader />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Form" element={<Form />} />
