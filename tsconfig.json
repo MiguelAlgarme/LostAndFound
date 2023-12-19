@@ -22,6 +22,6 @@
       
     }
   },
-  "include": ["src"],
+  "include": ["src", "server/server.cjs"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -39,7 +39,7 @@ export default function Nav({ user }: NavProps) {
   );
 }
 
-//TL;DR, click on page then it gets activated, remove "end:true" if you want it to still active if inside the page.
+//TL;DR, click on page then it gets activated, remove "end:true" if you want it to still be active if inside the page.
 interface CustomLinkProps {
   to: string;
   children: React.ReactNode;

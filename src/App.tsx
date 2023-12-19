@@ -10,7 +10,7 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Form from "./pages/CreateForm";
 import Profile from "./pages/Profile";
-//import PreLoader from "./pages/PreLoader.jsx"; //YOU CAN IGNORE THIS, THIS IS JUST FOR ANIMATIONS
+import PreLoader from "./pages/PreLoader.jsx"; //YOU CAN IGNORE THIS, THIS IS JUST FOR ANIMATIONS
 import { Route, Routes } from "react-router-dom";
 import Logout from "./components/Logout";
 

@@ -22,6 +22,7 @@ interface User {
   lastname: string;
 }
 
+//REACT PASSWORD CHECKLIST
 interface LoginProps {
   setUser: React.Dispatch<React.SetStateAction<User | null>>;
 }
