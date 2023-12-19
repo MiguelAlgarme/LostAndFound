@@ -39,6 +39,7 @@ function App() {
       <Nav user={user} />
       <div className="container1">
         <Routes>
+          <Route path="/" element={<PreLoader />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/Form" element={<Form />} />
