@@ -38,16 +38,21 @@
   
  
   .FormButton button {
-    position: relative;
-    background: rgb(5, 5, 5);
-    color: rgb(238, 235, 235);
+    display: inline-block;
+    outline: 0;
     border: 0;
-    padding: 10px;
-    border-radius: 10px;
     cursor: pointer;
-    overflow: hidden;
-    width: 100px;
-    height: 100%;
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 200ms,background 200ms;
+    &:hover{
+        transform: translateY(-2px);
+    }
   }
   
 .FormButton button::before {

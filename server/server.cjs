@@ -200,25 +200,6 @@ app.post('/api/login', (req, res, next) => {
 });
 
 
-app.delete('/api/logout', (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      console.error('Logout Error:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
-    } else {
-      req.session.destroy((sessionErr) => {
-        if (sessionErr) {
-          console.error('Session Destruction Error:', sessionErr);
-          res.status(500).json({ error: 'Internal Server Error' });
-        } else {
-          console.log('User logged out successfully');
-          res.sendStatus(204);
-        }
-      });
-    }
-  });
-});
-
 async function registerUser(firstName, lastName, plainPassword, email) {
   try {
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
@@ -257,6 +238,29 @@ async function loginUser(email, providedPassword) {
   }
 }
 
+app.delete('/api/logout', (req, res) => {
+  if (req.isAuthenticated()) {
+    req.logout((err) => {
+      if (err) {
+        console.error('Logout Error:', err);
+        res.status(500).json({ error: 'Internal Server Error' });
+      } else {
+        req.session.destroy((sessionErr) => {
+          if (sessionErr) {
+            console.error('Session Destruction Error:', sessionErr);
+            res.status(500).json({ error: 'Internal Server Error' });
+          } else {
+            console.log('User logged out successfully');
+            res.sendStatus(204);
+          }
+        });
+      }
+    });
+  } else {
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+});
+
 
 app.post('/api/register', async (req, res) => {
   try {
@@ -273,8 +277,8 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
+//swagga
 const spec = swaggerJsdoc(options);
-console.log('Swagger Specification:', spec);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 

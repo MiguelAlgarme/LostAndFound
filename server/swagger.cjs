@@ -2,6 +2,7 @@ const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
 
+//A copy of this is in server.cjs, so that one worked but this didn't. But just don't delete this in case.
 const options = {
   definition: {
     openapi: '3.0.0',

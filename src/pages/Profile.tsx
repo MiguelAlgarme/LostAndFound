@@ -3,7 +3,7 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Logout from "../components/Logout";
 import axios from "axios";
-
+import "../Profile.css";
 type User = {
   firstname: string;
   lastname: string;
@@ -12,6 +12,15 @@ type User = {
 export const Profile = () => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [showRegister, setShowRegister] = useState(false);
+
+  const openRegister = () => {
+    setShowRegister(true);
+  };
+
+  const closeRegister = () => {
+    setShowRegister(false);
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -39,7 +48,19 @@ export const Profile = () => {
       ) : (
         <>
           <Login setUser={setUser} />
-          <Register />
+          {showRegister && (
+            <div className="B2">
+              <p>Create an Account?</p>
+              <button>
+                <Register />
+              </button>
+            </div>
+          )}
+          {!showRegister && (
+            <div className="B3">
+              <button onClick={openRegister}>Create an Account?</button>
+            </div>
+          )}
         </>
       )}
     </div>
