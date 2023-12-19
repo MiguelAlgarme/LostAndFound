@@ -11,6 +11,10 @@ const LocalStrategy = require('passport-local').Strategy;
 const { Pool } = require('pg');
 const crypto = require('crypto');
 const cookieSession = require('cookie-session');
+const swaggerUi = require('swagger-ui-express');
+const path = require('path');
+const swaggerJsdoc = require('swagger-jsdoc');
+
 
 const secretKey = crypto.randomBytes(32).toString('hex');
 console.log('Generated Secret Key:', secretKey);
@@ -21,7 +25,26 @@ const pool = new Pool({
 });
 
 
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Documentation',
+      version: '1.0.0',
+      description: 'Lost and Found App for the students of USC',
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000', 
+      },
+    ],
+  },
+  apis: ['../server/server.cjs'],
+};
 
+
+
+module.exports = options;
 
 app.use(cors({
   origin: 'http://localhost:5173', 
@@ -32,7 +55,6 @@ app.use(cors({
 }));
 
 app.use(bodyParser.json());
-
 
 app.use(
   session({
@@ -69,6 +91,7 @@ passport.deserializeUser(async (id, done) => {
     done(error);
   }
 });
+
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -129,7 +152,28 @@ app.get('/api/profile', (req, res) => {
   }
 });
 
-
+/**
+ * @swagger
+ * /api/login:
+ *   post:
+ *     description: Login route
+ *     parameters:
+ *       - name: email
+ *         description: User email
+ *         in: formData
+ *         required: true
+ *         type: string
+ *       - name: password
+ *         description: User password
+ *         in: formData
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Successful login
+ *       401:
+ *         description: Authentication failed
+ */
 app.post('/api/login', (req, res, next) => {
   console.log('Login route handler called:', new Date().toISOString());
   passport.authenticate('local', (err, user, info) => {
@@ -228,6 +272,10 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ error: 'Registration failed' });
   }
 });
+
+const spec = swaggerJsdoc(options);
+console.log('Swagger Specification:', spec);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(spec));
 
 
 const PORT = process.env.PORT || 3000;
