@@ -12,13 +12,17 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0); /* Initial state with scale(0) */
     background-color: #fefefe;
     padding: 20px;
     border: 1px solid #888;
     width: 300px;
+    transition: transform 0.3s; /* Added transition property for smooth effect */
   }
   
+  .modal-content.show {
+    transform: translate(-50%, -50%) scale(1); /* Scale to 1 on show */
+  }
 
 
   .close {
@@ -32,7 +36,13 @@
   .button{
     font-size: 20px;
   }
-
+  .B2 {
+    margin: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    
+  }
   .B2 button{
     border-radius: 3%;
     border-color: black;
@@ -42,21 +52,37 @@
 
 
   .B3 button {
-  
-                display: inline-block;
-                outline: 0;
-                border: 0;
-                cursor: pointer;
-                background: #000000;
-                color: #FFFFFF;
-                border-radius: 8px;
-                padding: 14px 24px 16px;
-                font-size: 18px;
-                font-weight: 700;
-                line-height: 1;
-                transition: transform 200ms,background 200ms;
-                &:hover{
-                    transform: translateY(-2px);
-                }
-                
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 0.3s, background 200ms; 
+    &:hover {
+      transform: translateY(-2px);
+    }
   }
+
+  .UserInfo {
+    display: flex;
+   
+    justify-content: center; 
+    align-items: center;
+    text-align: left; 
+
+  }
+  
+  .UserInfo p {
+    font-size: 30px;
+    font-weight: bold;
+    padding: 20px;
+    margin: 0;
+  }
+  

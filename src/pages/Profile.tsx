@@ -38,11 +38,37 @@ export const Profile = () => {
 
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    const fetchUpdateAccountInfo = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/update-account",
+          {
+            withCredentials: true,
+          }
+        );
+        setUser(response.data);
+      } catch (error) {
+        console.error("Error fetching update account information...", error);
+      }
+    };
+
+    // Fetch update account information only when the component mounts
+    fetchUpdateAccountInfo();
+  }, []); // Empty dependency array ensures this runs once when the component mounts
+
   return (
     <div>
       {user !== null ? (
         <>
           <p>Welcome, {user.firstname}!</p>
+          <div className="UserInfo">
+            <p>ID number: {user.id}</p>
+            <p>Email: {user.email}</p>
+            <p>Role: "TO BE ADDED"</p>
+          </div>
+
           <Logout />
         </>
       ) : (
@@ -50,7 +76,7 @@ export const Profile = () => {
           <Login setUser={setUser} />
           {showRegister && (
             <div className="B2">
-              <p>Create an Account?</p>
+              <p>Account</p>
               <button>
                 <Register />
               </button>
@@ -58,7 +84,7 @@ export const Profile = () => {
           )}
           {!showRegister && (
             <div className="B3">
-              <button onClick={openRegister}>Create an Account?</button>
+              <button onClick={openRegister}>Sign up</button>
             </div>
           )}
         </>

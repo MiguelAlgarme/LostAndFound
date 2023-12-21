@@ -261,6 +261,19 @@ app.delete('/api/logout', (req, res) => {
   }
 });
 
+app.get('/api/update-account', (req, res) => {
+  try {
+    if (req.isAuthenticated()) {
+      const { id, firstname, lastname, email } = req.user;
+      res.json({ id, firstname, lastname, email });
+    } else {
+      res.status(401).json({ error: 'Unauthorized' });
+    }
+  } catch (error) {
+    console.error('Update Account Error:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 app.post('/api/register', async (req, res) => {
   try {

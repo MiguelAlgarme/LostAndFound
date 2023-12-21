@@ -111,90 +111,96 @@ function Register() {
   };
 
   return (
-    <div className="create">
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
-      <h2>Register</h2>
-      <form onSubmit={handleRegister}>
-        <label>First Name</label>
-        <input
-          type="text"
-          name="firstName"
-          placeholder="First Name"
-          value={formData.firstName}
-          onChange={handleChange}
-          required
+    <div className="Register">
+      <div className="create">
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
         />
-        <label>Last Name</label>
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last Name"
-          value={formData.lastName}
-          onChange={handleChange}
-          required
-        />
-        <label>Email</label>
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-        />
+        <h2>REGISTER</h2>
+        <form onSubmit={handleRegister}>
+          <label>First Name</label>
+          <input
+            type="text"
+            name="firstName"
+            placeholder="First Name"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
+          />
+          <label>Last Name</label>
+          <input
+            type="text"
+            name="lastName"
+            placeholder="Last Name"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+          />
+          <label>Email</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+          />
 
-        <br />
-        <label>Password</label>
-        {/*Creating a CSS for this is too tiresome, might as well put it here*/}
-        <div
-          className="password-strength"
-          style={{
-            color: PassCo(),
-            padding: "2px 2px",
-            margin: "4px 0",
-            fontSize: "16px",
-            fontWeight: "bold",
-            transition: "color 1.0s",
-          }}
-        >
-          {passwordStrength}
-        </div>
+          <br />
+          <label>Password</label>
+          {/*Creating a CSS for this is too tiresome, might as well put it here*/}
+          <div
+            className="password-strength"
+            style={{
+              color: PassCo(),
+              padding: "2px 2px",
+              margin: "4px 0",
+              fontSize: "16px",
+              fontWeight: "bold",
+              transition: "color 1.0s",
+            }}
+          >
+            {passwordStrength}
+          </div>
 
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handlePasswordChange}
-          required
-        />
+          <input
+            type="password"
+            name="password"
+            placeholder="Password"
+            value={formData.password}
+            onChange={handlePasswordChange}
+            required
+          />
 
-        <label>Confirm Password</label>
-        <input
-          type="password"
-          name="passwordConfirm"
-          placeholder="Confirm Password"
-          value={passwordConfirm}
-          onChange={(e) => setPasswordConfirm(e.target.value)}
-          required
-        />
-        <div className="FormButton">
-          <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? <div className="shimmer">Loading...</div> : "Register"}
-          </button>
-        </div>
-      </form>
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            name="passwordConfirm"
+            placeholder="Confirm Password"
+            value={passwordConfirm}
+            onChange={(e) => setPasswordConfirm(e.target.value)}
+            required
+          />
+          <div className="FormButton">
+            <button className="button" type="submit" disabled={isLoading}>
+              {isLoading ? (
+                <div className="shimmer">Loading...</div>
+              ) : (
+                "Register"
+              )}
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
