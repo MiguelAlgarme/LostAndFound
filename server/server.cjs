@@ -218,6 +218,7 @@ app.get('/api/all-users', async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+//----------------------------------------------DELETING CODE----------------------------
 app.delete('/api/delete-user/:userId', async (req, res) => {
   const userId = req.params.userId;
 
@@ -238,6 +239,47 @@ app.delete('/api/delete-user/:userId', async (req, res) => {
   }
 });
 
+app.delete('/api/delete-account', async (req, res) => {
+  try {
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const userId = req.user.id;
+    console.log('Deleting account for user ID:', userId);
+
+    const deleteQuery = 'DELETE FROM users WHERE id = $1';
+    const deleteValues = [userId];
+    await pool.query(deleteQuery, deleteValues);
+
+    req.logout();
+    req.session.destroy();
+
+    console.log('Account deleted successfully.');
+    
+    res.sendStatus(204);
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.delete('/api/destroy-sessions', async (req, res) => {
+  try {
+    const pgSessionStore = new pgSession({
+      pool,
+    });
+
+    await pgSessionStore.clear();
+
+    console.log('All sessions destroyed successfully');
+    res.sendStatus(204);
+  } catch (error) {
+    console.error('Error destroying sessions:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+//----------------------------------------------DELETING CODE----------------------------
 
 async function registerUser(firstName, lastName, plainPassword, email) {
   try {
@@ -283,7 +325,6 @@ async function loginUser(email, providedPassword) {
     throw error;
   }
 }
-
 
 
 
