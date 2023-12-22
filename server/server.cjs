@@ -200,16 +200,24 @@ app.post('/api/login', (req, res, next) => {
 });
 
 
+
 async function registerUser(firstName, lastName, plainPassword, email) {
   try {
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    const existingUser = await db.oneOrNone('SELECT id FROM users WHERE email = $1', [email]);
+    
+    if (existingUser) {
+      const error = new Error('Email already exists');
+      error.status = 409;
+      throw error;
+    }
 
     await db.none(
       'INSERT INTO users (firstname, lastname, password, email) VALUES ($1, $2, $3, $4)',
       [firstName, lastName, hashedPassword, email]
     );
 
-    //Gets the new users and the users details except for the passord
     const newUser = await db.one('SELECT id, firstname, lastname, email FROM users WHERE email = $1', [email]);
     
     return newUser;
@@ -286,6 +294,11 @@ app.post('/api/register', async (req, res) => {
     res.status(200).json({ message: 'Registration successful' });
   } catch (error) {
     console.error('Registration failed:', error);
+
+    if (error.status === 409) {
+      return res.status(409).json({ error: 'Email already exists' });
+    }
+
     res.status(500).json({ error: 'Registration failed' });
   }
 });

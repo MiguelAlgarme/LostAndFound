@@ -18,14 +18,10 @@ function Register() {
     email: "",
     password: "",
   });
-  //I found a problem where it would blink
-  //and not accept passwords that are not strong enough,
-  //but then blink to strong when only one letter will change
-  //I MIGHT try other libraries.
-  //PASSWORD STRENGTH
 
   const [passwordStrength, setPasswordStrength] = useState("WEAK!");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handlePasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newPassword = event.target.value;
@@ -35,9 +31,7 @@ function Register() {
 
     setPasswordStrength(result.score >= 2 ? "Eh its ok I guess" : "WEAK!");
   };
-  //PASSWORD STRENGTH
 
-  //PASSWORD STATE COLOR
   const PassCo = () => {
     switch (passwordStrength) {
       case "WEAK!":
@@ -48,25 +42,28 @@ function Register() {
         return "white";
     }
   };
-  //PASSWORD STATE COLOR
-
-  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    //PASSWORD CONFIRMATIONN
     if (formData.password !== passwordConfirm) {
       toast.error("Passwords do not match", {
         position: toast.POSITION.TOP_RIGHT,
       });
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 2000);
+      setIsLoading(false);
       return;
     }
-    //PASSWORD CONFIRMATIONN
+
+    // PASSWORD STRENGTH VALIDATION
+    if (zxcvbn(formData.password).score < 2) {
+      toast.error("Password is too weak. Please choose a stronger password.", {
+        position: toast.POSITION.TOP_RIGHT,
+      });
+      setIsLoading(false);
+      return;
+    }
+    // PASSWORD STRENGTH VALIDATION
 
     try {
       const response = await fetch("http://localhost:3000/api/register", {
@@ -87,12 +84,19 @@ function Register() {
         toast.success("You have been registered!", {
           position: toast.POSITION.TOP_RIGHT,
         });
-
-        // Should add a redirect
       } else {
-        toast.warning("Registration Error", {
-          position: toast.POSITION.TOP_RIGHT,
-        });
+        const data = await response.json();
+
+        if (response.status === 409) {
+          toast.warning(`Registration failed: ${data.error}`, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        } else {
+          toast.warning(`Registration failed: ${response.statusText}`, {
+            position: toast.POSITION.TOP_RIGHT,
+          });
+        }
+
         setTimeout(() => {
           setIsLoading(false);
         }, 2000);
@@ -157,7 +161,6 @@ function Register() {
 
           <br />
           <label>Password</label>
-          {/*Creating a CSS for this is too tiresome, might as well put it here*/}
           <div
             className="password-strength"
             style={{
@@ -171,7 +174,6 @@ function Register() {
           >
             {passwordStrength}
           </div>
-
           <input
             type="password"
             name="password"
@@ -192,11 +194,7 @@ function Register() {
           />
           <div className="FormButton">
             <button className="button" type="submit" disabled={isLoading}>
-              {isLoading ? (
-                <div className="shimmer">Loading...</div>
-              ) : (
-                "Register"
-              )}
+              {isLoading ? <div className="shimmer">Loading</div> : "Register"}
             </button>
           </div>
         </form>

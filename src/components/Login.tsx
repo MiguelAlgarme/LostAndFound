@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "../Login.css"; 
+import "../Login.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import * as yup from "yup";
@@ -152,7 +152,7 @@ function Login({ setUser }: LoginProps) {
         )}
         <div className="FormButton">
           <button className="button" type="submit" disabled={isLoading}>
-            {isLoading ? <div className="shimmer">Loading...</div> : "Login"}
+            {isLoading ? <div className="shimmer">Loading</div> : "Login"}
           </button>
         </div>
       </form>

@@ -54,10 +54,9 @@ export const Profile = () => {
       }
     };
 
-    // Fetch update account information only when the component mounts
     fetchUpdateAccountInfo();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
-
+  }, []);
+  //Some errors below you can ignore. They aren't critical
   return (
     <div>
       {user !== null ? (
