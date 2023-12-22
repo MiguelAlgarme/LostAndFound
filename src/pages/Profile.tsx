@@ -19,7 +19,8 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
-
+  //some of these aren't used, and was just for experimentation.
+  //most likely these were scrapped, but I didn't want to comment them out lmaoo
   const openRegister = () => {
     setShowRegister(true);
   };
@@ -102,9 +103,14 @@ const Profile = () => {
           },
         }
       );
-
+      const reincarnateButton = document.getElementById("reincarnateButton");
+      if (reincarnateButton) {
+        reincarnateButton.classList.add("shake");
+      }
       toast.success(response.data.message);
-      closeUpdate();
+      setTimeout(() => {
+        closeUpdate();
+      }, 2000);
     } catch (error: any) {
       if (error.response && error.response.status === 409) {
         toast.error("Email is already in use");
@@ -127,13 +133,15 @@ const Profile = () => {
             <p>Email: {user.email}</p>
             <p>Role: "TO BE ADDED"</p>
           </div>
-
-          <button onClick={openUpdate}>Update Profile</button>
           <Logout />
+          <div className="UpdateButton">
+            <button onClick={openUpdate}>Update Profile</button>
+          </div>
+
           {showUpdate && (
-            <div>
+            <div className={`UpdateForm ${showUpdate ? "open" : ""}`}>
               <form onSubmit={handleSubmit}>
-                <label htmlFor="firstname">First Name:</label>
+                <label htmlFor="firstname">First Name</label>
                 <input
                   id="firstname"
                   name="firstname"
@@ -141,7 +149,7 @@ const Profile = () => {
                   onChange={handleInputChange}
                   value={formData.firstname}
                 />
-                <label htmlFor="lastname">Last Name:</label>
+                <label htmlFor="lastname">Last Name</label>
                 <input
                   id="lastname"
                   name="lastname"
@@ -149,7 +157,7 @@ const Profile = () => {
                   onChange={handleInputChange}
                   value={formData.lastname}
                 />
-                <label htmlFor="email">Email:</label>
+                <label htmlFor="email">Email</label>
                 <input
                   id="email"
                   name="email"
@@ -157,7 +165,7 @@ const Profile = () => {
                   onChange={handleInputChange}
                   value={formData.email}
                 />
-                <label htmlFor="password">Password:</label>
+                <label htmlFor="password">Password</label>
                 <input
                   id="password"
                   name="newPassword"
@@ -165,14 +173,20 @@ const Profile = () => {
                   onChange={handleInputChange}
                   value={formData.newPassword}
                 />
-                <button type="submit">Update Profile</button>
+                <button
+                  id="reincarnateButton"
+                  type="submit"
+                  className="reincarButton"
+                >
+                  Reincarnate
+                </button>
               </form>
+
               <button onClick={closeUpdate}>Close Update Form</button>
             </div>
           )}
         </>
       ) : (
-        //Again ignore the error in the setUser, still works without fixing this.
         <>
           <Login setUser={setUser} />
           {showRegister && (
