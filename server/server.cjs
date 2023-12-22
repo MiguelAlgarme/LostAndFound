@@ -80,9 +80,9 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await db.oneOrNone('SELECT id, firstname, lastname, email FROM users WHERE id = $1', [id]);
-    console.log('Deserialized User:',user);
-    
+    const user = await db.oneOrNone('SELECT id, firstname, lastname, email, role FROM users WHERE id = $1', [id]);
+    console.log('Deserialized User:', user);
+
     if (!user) {
       return done(new Error('User not found'));
     }
@@ -91,7 +91,6 @@ passport.deserializeUser(async (id, done) => {
     done(error);
   }
 });
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -146,12 +145,11 @@ app.get('/profile', (req, res) => {
 
 app.get('/api/profile', (req, res) => {
   if (req.isAuthenticated()) {
-    res.json({ user: req.user });
+    res.json({ user: { ...req.user, role: req.user.role || null } });
   } else {
     res.status(401).json({ error: 'Unauthorized' });
   }
 });
-
 /**
  * @swagger
  * /api/login:
@@ -199,6 +197,46 @@ app.post('/api/login', (req, res, next) => {
   })(req, res, next);
 });
 
+
+app.get('/api/all-users', async (req, res) => {
+  try {
+    console.log('Authenticated User:', req.user);
+
+    if (!req.isAuthenticated()) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    if (req.user && req.user.role !== 'ADMIN') {
+      console.log('User does not have admin role');
+      return res.status(403).json({ error: 'Permission DENIED' });
+    }
+
+    const users = await db.any('SELECT id, firstname, lastname, email, role FROM users');
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error('Error fetching all users:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+app.delete('/api/delete-user/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+    // ADMIN ONLY
+    if (req.user.role !== 'ADMIN') {
+      return res.status(403).json({ error: 'Permission DENIED' });
+    }
+
+    const deleteQuery = 'DELETE FROM users WHERE id = $1';
+    const deleteValues = [userId];
+    await pool.query(deleteQuery, deleteValues);
+
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
 
 
 async function registerUser(firstName, lastName, plainPassword, email) {

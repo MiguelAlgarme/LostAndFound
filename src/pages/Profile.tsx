@@ -12,6 +12,7 @@ type User = {
   firstname: string;
   lastname: string;
   email: string;
+  role: string;
 };
 
 const Profile = () => {
@@ -19,8 +20,10 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showRegister, setShowRegister] = useState(false);
   const [showUpdate, setShowUpdate] = useState(false);
-  //some of these aren't used, and was just for experimentation.
-  //most likely these were scrapped, but I didn't want to comment them out lmaoo
+  const [userList, setUserList] = useState<User[]>([]);
+  //Some codes here aren't used, some were created for experimentation only.
+  //Bruh
+
   const openRegister = () => {
     setShowRegister(true);
   };
@@ -71,7 +74,7 @@ const Profile = () => {
             withCredentials: true,
           }
         );
-        setUser(response.data);
+        setUser(response.data.user);
       } catch (error) {
         console.error("Error fetching update account information...", error);
       }
@@ -80,14 +83,23 @@ const Profile = () => {
     fetchUpdateAccountInfo();
   }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
+  useEffect(() => {
+    const fetchUserList = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/all-users",
+          {
+            withCredentials: true,
+          }
+        );
+        setUserList(response.data.users);
+      } catch (error) {
+        console.error("Error fetching user list...", error);
+      }
+    };
 
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
+    fetchUserList();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -123,6 +135,15 @@ const Profile = () => {
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
   return (
     <div>
       {user !== null ? (
@@ -131,13 +152,11 @@ const Profile = () => {
           <div className="UserInfo">
             <p>ID number: {user.id}</p>
             <p>Email: {user.email}</p>
-            <p>Role: "TO BE ADDED"</p>
           </div>
           <Logout />
           <div className="UpdateButton">
             <button onClick={openUpdate}>Update Profile</button>
           </div>
-
           {showUpdate && (
             <div className={`UpdateForm ${showUpdate ? "open" : ""}`}>
               <form onSubmit={handleSubmit}>
