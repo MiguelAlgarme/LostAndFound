@@ -246,6 +246,9 @@ async function loginUser(email, providedPassword) {
   }
 }
 
+
+
+
 app.delete('/api/logout', (req, res) => {
   if (req.isAuthenticated()) {
     req.logout((err) => {
@@ -269,19 +272,46 @@ app.delete('/api/logout', (req, res) => {
   }
 });
 
-app.get('/api/update-account', (req, res) => {
+
+
+
+
+
+app.post('/api/update-profile', async (req, res) => {
   try {
-    if (req.isAuthenticated()) {
-      const { id, firstname, lastname, email } = req.user;
-      res.json({ id, firstname, lastname, email });
-    } else {
-      res.status(401).json({ error: 'Unauthorized' });
+    const { firstname, lastname, email, newPassword } = req.body;
+    console.log('Received Data:', { firstname, lastname, email, newPassword });
+
+    const existingUser = await db.oneOrNone('SELECT id FROM users WHERE email = $1 AND id != $2', [email, req.user.id]);
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email is already in use' });
     }
+
+    let hashedPassword = req.user.password; 
+
+    if (newPassword) {
+      hashedPassword = bcrypt.hashSync(newPassword, 10);
+      console.log('Hashed Password:', hashedPassword);
+    }
+
+    
+    const updatedUser = await db.oneOrNone(
+      'UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4 WHERE id = $5 RETURNING *',
+      [firstname, lastname, email, hashedPassword, req.user.id]
+    );
+
+    if (!updatedUser) {
+      return res.status(500).json({ error: 'Profile update failed' });
+    }
+
+    res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
   } catch (error) {
-    console.error('Update Account Error:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error('Profile update failed:', error);
+    res.status(500).json({ error: 'Profile update failed' });
   }
 });
+
+
 
 app.post('/api/register', async (req, res) => {
   try {
@@ -302,6 +332,8 @@ app.post('/api/register', async (req, res) => {
     res.status(500).json({ error: 'Registration failed' });
   }
 });
+
+
 
 //swagga
 const spec = swaggerJsdoc(options);
