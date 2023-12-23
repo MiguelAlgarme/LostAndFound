@@ -281,6 +281,27 @@ app.delete('/api/destroy-sessions', async (req, res) => {
 });
 //----------------------------------------------DELETING CODE----------------------------
 
+app.post('/api/founditems', async (req, res) => {
+  try {
+    const {
+      dateFound,
+      locationFound,
+      specifyItem,
+      description,
+      founderID,
+    } = req.body;
+    await db.none(
+      'INSERT INTO FoundItems (dateFound, locationFound, specifyItem, description, founderID) VALUES ($1, $2, $3, $4, $5)',
+      [dateFound, locationFound, specifyItem, description, founderID]
+    );
+
+    res.status(201).json({ message: 'Form data inserted successfully' });
+  } catch (error) {
+    console.error('Error inserting data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 async function registerUser(firstName, lastName, plainPassword, email) {
   try {
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
