@@ -1,6 +1,6 @@
 # WANDERLOST
 
-a user-friendly application for users of the university of sancarlos to easily manage their
+a user-friendly application for users of the university of San-Carlos to easily manage their
 lost belongings or found belongings.
 
 Install dependencies by doing: npm install <br>
