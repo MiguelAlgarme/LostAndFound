@@ -21,7 +21,7 @@ console.log('Generated Secret Key:', secretKey);
 
 
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:admin@localhost:5432/postgres',
+  connectionString: 'postgresql://postgres:admin@localhost:5432/TESTING2',
 });
 
 
@@ -239,36 +239,42 @@ app.delete('/api/delete-user/:userId', async (req, res) => {
   }
 });
 
-app.delete('/api/delete-account', (req, res) => {
+app.delete('/api/delete-account/:userId', async (req, res) => {
   try {
     if (!req.isAuthenticated()) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ success: false, error: 'Unauthorized' });
     }
 
-    const userId = req.user.id;
+    const userId = req.params.userId; 
     console.log('Deleting account for user ID:', userId);
+    console.log('UserId from route parameter:', req.params.userId);
 
     const deleteQuery = 'DELETE FROM users WHERE id = $1';
     const deleteValues = [userId];
 
+    console.log('Delete Query:', deleteQuery);
+    console.log('Delete Values:', deleteValues);
 
-    req.logout(() => {
-      req.session.destroy();
-      pool.query(deleteQuery, deleteValues, (error, result) => {
-        if (error) {
-          console.error('Error deleting account:', error);
-          res.status(500).json({ error: 'Internal Server Error' });
-        } else {
-          console.log('Account deleted successfully.');
-          res.sendStatus(204);
-        }
-      });
-    });
+    try {
+      const result = await pool.query(deleteQuery, deleteValues);
+
+      if (result.rowCount === 1) {
+        console.log('Account deleted successfully.');
+        res.status(204).json({ success: true, message: 'Account deleted successfully' });
+      } else {
+        console.error('Account not deleted. User ID may not exist.');
+        res.status(404).json({ success: false, error: 'User not found' });
+      }
+    } catch (error) {
+      console.error('Error executing DELETE query:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
+    }
   } catch (error) {
     console.error('Error deleting account:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
   }
 });
+
 
 app.delete('/api/destroy-sessions', async (req, res) => {
   try {
@@ -413,8 +419,6 @@ app.delete('/api/logout', (req, res) => {
     res.status(401).json({ error: 'Unauthorized' });
   }
 });
-
-
 
 
 

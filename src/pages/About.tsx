@@ -15,6 +15,7 @@ interface User {
 export default function About() {
   const [user, setUser] = useState<User | null>(null);
   const [deleteInput, setDeleteInput] = useState("");
+  const [userId, setUserId] = useState<string | null>(null); // Add userId state
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -22,7 +23,9 @@ export default function About() {
         const response = await axios.get("http://localhost:3000/api/profile", {
           withCredentials: true,
         });
-        setUser(response.data.user);
+        const userData = response.data.user;
+        setUser(userData);
+        setUserId(userData?.id || null); // Set userId in the state
       } catch (error) {
         console.error("Error fetching user...", error);
       }
@@ -48,17 +51,18 @@ export default function About() {
   };
 
   const handleDeleteAccount = async () => {
-    if (deleteInput === "Goodbye Cruel World!") {
+    if (deleteInput === "Goodbye Cruel World!" && userId) {
+      console.log("Deleting account for user ID:", userId);
       try {
         const response = await axios.delete(
-          "http://localhost:3000/api/delete-account",
+          `http://localhost:3000/api/delete-account/${userId}`,
           {
             withCredentials: true,
           }
         );
 
         if (response.data.message === "Account deleted successfully") {
-          window.location.href = "/";
+          console.log("ACCOUNT DELETED!");
         } else {
           console.error("Error deleting account:", response.data.error);
         }
@@ -88,9 +92,8 @@ export default function About() {
       <h1>ABOUT US</h1>
       <p>
         Wanderlost is a website created by <b>Miguel Algarme</b> and{" "}
-        <b>Bryce Co</b>, to help students <br /> of the University of San Carlos
-        find whatever they have lost in the campus <br /> or potential thieves
-        heh
+        <b>Bryce Co</b>, to help students <br /> or anyone to find whatever they
+        have lost in the campus <br /> or potential thieves heh
       </p>
       {user && user.role && (
         <>
