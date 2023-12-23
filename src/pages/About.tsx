@@ -55,7 +55,7 @@ export default function About() {
       console.log("Deleting account for user ID:", userId);
       try {
         const response = await axios.delete(
-          'http://localhost:3000/api/delete-account/${userId}',
+          `http://localhost:3000/api/delete-account/${userId}`,
           {
             withCredentials: true,
           }

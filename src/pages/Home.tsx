@@ -40,7 +40,7 @@ const Home = () => {
         {formSubmissions.map((submission: FormSubmission) => (
           <div className="card" key={submission.id}>
             <h3>Item: {submission.specifyitem}</h3>
-            <p>Description: {submission.description}</p>
+            <p>Description and Personal Info: {submission.description}</p>
             <p>Location Found: {submission.locationfound}</p>
             <p>Date Found: {formatDate(submission.datefound)}</p>
           </div>
