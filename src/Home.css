@@ -1,43 +1,25 @@
 /* Home.css */
 
-/* Styles for the main container */
-.home-container {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  /* Styles for scrollable container */
-  .scrollable-container {
-    display: flex;
-    justify-content: space-between;
-    overflow-x: auto;
-    margin-top: 20px;
-  }
-  
-  /* Styles for items lost container */
-  .items-lost-container {
-    width: 45%;
-    background-color: #f0f0f0;
-    padding: 10px;
-    border-radius: 10px;
-  }
-  
-  /* Styles for items found container */
-  .items-found-container {
-    width: 45%;
-    background-color: #f9f9f9;
-    padding: 10px;
-    border-radius: 10px;
-  }
-  
-  /* Styles for item card */
-  .item-card {
-    background-color: #fff;
-    border: 1px solid #ccc;
-    margin-bottom: 10px;
-    padding: 10px;
-  }
-  
-  .header{
-    color: black;
-  }
+.home {
+  text-align: center;
+  padding: 20px;
+}
+
+.formSubmissions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 15px;
+  width: 300px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: black;
+}
+
+/* Add more specific styles as needed */
