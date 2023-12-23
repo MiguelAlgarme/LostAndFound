@@ -19,7 +19,7 @@ const swaggerJsdoc = require('swagger-jsdoc');
 const secretKey = crypto.randomBytes(32).toString('hex');
 console.log('Generated Secret Key:', secretKey);
 
-
+//WARNING: CHANGE THE NAME FOR THIS ONE FOR DATABASE CONNECTION!
 const pool = new Pool({
   connectionString: 'postgresql://postgres:admin@localhost:5432/TESTING2',
 });
