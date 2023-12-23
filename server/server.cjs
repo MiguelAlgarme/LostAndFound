@@ -21,7 +21,7 @@ console.log('Generated Secret Key:', secretKey);
 
 
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:admin@localhost:5432/TESTING2',
+  connectionString: 'postgresql://postgres:admin@localhost:5432/LostAndFound',
 });
 
 
@@ -317,34 +317,12 @@ app.post('/api/founditems', async (req, res) => {
 // Inside the route handling form submissions
 app.get('/api/all-submissions', async (req, res) => {
   try {
-    const submissions = await Submission.find({}); // Assuming using a database like MongoDB and Mongoose
+    const formSubmissions = await db.any('SELECT * FROM FoundItems');
 
-    console.log('Form Submissions:', submissions); // Log the fetched submissions
-
-    res.status(200).json({ submissions });
+    res.status(200).json({ submissions: formSubmissions });
   } catch (error) {
     console.error('Error fetching form submissions:', error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
-
-// Inside the route handling user data
-app.get('/api/user/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const user = await User.findById(id); // Assuming using a database like MongoDB and Mongoose
-
-    console.log('User Details for ID:', id, user); // Log the fetched user details
-
-    if (!user) {
-      res.status(404).json({ error: 'User not found' });
-      return;
-    }
-
-    res.status(200).json({ user });
-  } catch (error) {
-    console.error('Error fetching user data:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

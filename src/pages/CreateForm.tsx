@@ -199,7 +199,7 @@ const CreateForm = () => {
               <Field type="text" id="specifyItem" name="specifyItem" />
               <ErrorMessage name="specifyItem" component="div" className="error" />
   
-              <label htmlFor="description">Description of Item</label>
+              <label htmlFor="description">Description and Personal Information</label>
               <Field as="textarea" id="description" name="description" />
               <ErrorMessage name="description" component="div" className="error" />
   
