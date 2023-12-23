@@ -239,7 +239,7 @@ app.delete('/api/delete-user/:userId', async (req, res) => {
   }
 });
 
-app.delete('/api/delete-account', async (req, res) => {
+app.delete('/api/delete-account', (req, res) => {
   try {
     if (!req.isAuthenticated()) {
       return res.status(401).json({ error: 'Unauthorized' });
@@ -250,14 +250,20 @@ app.delete('/api/delete-account', async (req, res) => {
 
     const deleteQuery = 'DELETE FROM users WHERE id = $1';
     const deleteValues = [userId];
-    await pool.query(deleteQuery, deleteValues);
 
-    req.logout();
-    req.session.destroy();
 
-    console.log('Account deleted successfully.');
-    
-    res.sendStatus(204);
+    req.logout(() => {
+      req.session.destroy();
+      pool.query(deleteQuery, deleteValues, (error, result) => {
+        if (error) {
+          console.error('Error deleting account:', error);
+          res.status(500).json({ error: 'Internal Server Error' });
+        } else {
+          console.log('Account deleted successfully.');
+          res.sendStatus(204);
+        }
+      });
+    });
   } catch (error) {
     console.error('Error deleting account:', error);
     res.status(500).json({ error: 'Internal Server Error' });
