@@ -9,8 +9,8 @@ import { format } from 'date-fns';
 const initialValues = {
   firstName: "",
   lastName: "",
-  dateFound: "",
-  locationFound: "",
+  dateLost: "",
+  locationLost: "",
   specifyItem: "",
   description: "",
   image: null,
@@ -20,10 +20,10 @@ const initialValues = {
 const validationSchema = Yup.object().shape({
   firstName: Yup.string().required("First name is required"),
   lastName: Yup.string().required("Last name is required"),
-  dateFound: Yup.date()
-    .required("Date found is required")
-    .max(format(new Date(), 'yyyy-MM-dd'), "Date found cannot be after the present date"),
-  locationFound: Yup.string().required("Location found is required"),
+  dateLost: Yup.date()
+    .required("Date Lost is required")
+    .max(format(new Date(), 'yyyy-MM-dd'), "Date lost cannot be after the present date"),
+  locationLost: Yup.string().required("Location lost is required"),
   specifyItem: Yup.string().required("Specify item is required"),
   description: Yup.string().required("Description is required"),
   image: Yup.mixed().required("Image is required"),
@@ -44,8 +44,8 @@ const CreateForm = () => {
 
   return (
     <div className="create">
-      <h2>Report Found Item</h2>
-      <p>Please provide details about the found item</p>
+      <h2>Lost an Item?</h2>
+      <p>Tell us more of what you lost</p>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
@@ -61,18 +61,18 @@ const CreateForm = () => {
             <Field type="text" id="lastName" name="lastName" />
             <ErrorMessage name="lastName" component="div" className="error" />
 
-            <label htmlFor="dateFound">Date Found</label>
+            <label htmlFor="dateLost">Date Lost</label>
             <Field
               type="date"
-              id="dateFound"
-              name="dateFound"
+              id="dateLost"
+              name="dateLost"
               max={format(new Date(), 'yyyy-MM-dd')}
             />
-            <ErrorMessage name="dateFound" component="div" className="error" />
+            <ErrorMessage name="dateLost" component="div" className="error" />
 
-            <label htmlFor="locationFound">Location Found</label>
-            <Field type="text" id="locationFound" name="locationFound" />
-            <ErrorMessage name="locationFound" component="div" className="error" />
+            <label htmlFor="locationLost">Location Lost</label>
+            <Field type="text" id="locationLost" name="locationLost" />
+            <ErrorMessage name="locationLost" component="div" className="error" />
 
             <label htmlFor="specifyItem">Specify Item</label>
             <Field type="text" id="specifyItem" name="specifyItem" />

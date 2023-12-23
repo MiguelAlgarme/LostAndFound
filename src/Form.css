@@ -80,3 +80,13 @@
 .Toastify__close-button {
     background-color: transparent!important;
 }
+
+.Register h2 {
+  padding: 20px;
+  font-weight: bold;
+}
+
+.Register {
+  padding: 20px;
+  border-color: #f0f0f0;
+}

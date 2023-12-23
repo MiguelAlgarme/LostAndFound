@@ -13,6 +13,7 @@ import Profile from "./pages/Profile";
 import PreLoader from "./pages/PreLoader.jsx"; //YOU CAN IGNORE THIS, THIS IS JUST FOR ANIMATIONS
 import { Route, Routes } from "react-router-dom";
 import Logout from "./components/Logout";
+import "./video.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -37,6 +38,12 @@ function App() {
   return (
     <div>
       <Nav user={user} />
+      <div className="videoContainer">
+        <video className="video" playsInline autoPlay muted loop>
+          <source src="../Assets/waiting.mp4" type="video/mp4" />
+        </video>
+      </div>
+
       <div className="container1">
         <Routes>
           <Route path="/" element={<PreLoader />} />

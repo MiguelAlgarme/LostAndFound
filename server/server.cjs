@@ -200,16 +200,24 @@ app.post('/api/login', (req, res, next) => {
 });
 
 
+
 async function registerUser(firstName, lastName, plainPassword, email) {
   try {
     const hashedPassword = await bcrypt.hash(plainPassword, 10);
+
+    const existingUser = await db.oneOrNone('SELECT id FROM users WHERE email = $1', [email]);
+    
+    if (existingUser) {
+      const error = new Error('Email already exists');
+      error.status = 409;
+      throw error;
+    }
 
     await db.none(
       'INSERT INTO users (firstname, lastname, password, email) VALUES ($1, $2, $3, $4)',
       [firstName, lastName, hashedPassword, email]
     );
 
-    //Gets the new users and the users details except for the passord
     const newUser = await db.one('SELECT id, firstname, lastname, email FROM users WHERE email = $1', [email]);
     
     return newUser;
@@ -238,6 +246,9 @@ async function loginUser(email, providedPassword) {
   }
 }
 
+
+
+
 app.delete('/api/logout', (req, res) => {
   if (req.isAuthenticated()) {
     req.logout((err) => {
@@ -262,6 +273,46 @@ app.delete('/api/logout', (req, res) => {
 });
 
 
+
+
+
+
+app.post('/api/update-profile', async (req, res) => {
+  try {
+    const { firstname, lastname, email, newPassword } = req.body;
+    console.log('Received Data:', { firstname, lastname, email, newPassword });
+
+    const existingUser = await db.oneOrNone('SELECT id FROM users WHERE email = $1 AND id != $2', [email, req.user.id]);
+    if (existingUser) {
+      return res.status(400).json({ error: 'Email is already in use' });
+    }
+
+    let hashedPassword = req.user.password; 
+
+    if (newPassword) {
+      hashedPassword = bcrypt.hashSync(newPassword, 10);
+      console.log('Hashed Password:', hashedPassword);
+    }
+
+    
+    const updatedUser = await db.oneOrNone(
+      'UPDATE users SET firstname = $1, lastname = $2, email = $3, password = $4 WHERE id = $5 RETURNING *',
+      [firstname, lastname, email, hashedPassword, req.user.id]
+    );
+
+    if (!updatedUser) {
+      return res.status(500).json({ error: 'Profile update failed' });
+    }
+
+    res.status(200).json({ message: 'Profile updated successfully', user: updatedUser });
+  } catch (error) {
+    console.error('Profile update failed:', error);
+    res.status(500).json({ error: 'Profile update failed' });
+  }
+});
+
+
+
 app.post('/api/register', async (req, res) => {
   try {
     const { firstName, lastName, password, email } = req.body;
@@ -273,9 +324,16 @@ app.post('/api/register', async (req, res) => {
     res.status(200).json({ message: 'Registration successful' });
   } catch (error) {
     console.error('Registration failed:', error);
+
+    if (error.status === 409) {
+      return res.status(409).json({ error: 'Email already exists' });
+    }
+
     res.status(500).json({ error: 'Registration failed' });
   }
 });
+
+
 
 //swagga
 const spec = swaggerJsdoc(options);

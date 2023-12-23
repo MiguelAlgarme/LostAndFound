@@ -1,5 +1,5 @@
 .modal {
-    display: block; /* Make sure the modal is initially visible for testing */
+    display: block; 
     position: fixed;
     top: 0;
     left: 0;
@@ -12,13 +12,17 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) scale(0); 
     background-color: #fefefe;
     padding: 20px;
     border: 1px solid #888;
     width: 300px;
+    transition: transform 0.3s; 
   }
   
+  .modal-content.show {
+    transform: translate(-50%, -50%) scale(1); 
+  }
 
 
   .close {
@@ -33,6 +37,16 @@
     font-size: 20px;
   }
 
+ 
+
+
+  .B2 {
+    margin: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    
+  }
   .B2 button{
     border-radius: 3%;
     border-color: black;
@@ -41,22 +55,143 @@
 
 
 
+
   .B3 button {
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 0.3s, background 200ms; 
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .UpdateButton {
+    margin: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
+  }
+
+  .UpdateButton button{ 
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 0.3s, background 200ms; 
+    &:hover {
+      transform: translateY(-2px);
+    }
+
+  }
+
+  .UpdateForm {
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 400px; 
+    overflow: hidden;
+    margin: 20px;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 4px;
+  }
   
-                display: inline-block;
-                outline: 0;
-                border: 0;
-                cursor: pointer;
-                background: #000000;
-                color: #FFFFFF;
-                border-radius: 8px;
-                padding: 14px 24px 16px;
-                font-size: 18px;
-                font-weight: 700;
-                line-height: 1;
-                transition: transform 200ms,background 200ms;
-                &:hover{
-                    transform: translateY(-2px);
-                }
-                
+  .UpdateForm.open {
+    transform: translateY(0);
+  }
+  
+  .UpdateForm button {
+    border-radius: 3%;
+    border-color: black;
+    background-color: black;
+    color: #FFFFFF;
+  }
+  
+
+  .UpdateForm button {
+    display: inline-block;
+    outline: 0;
+    border: 0;
+    cursor: pointer;
+    background: #000000;
+    color: #FFFFFF;
+    border-radius: 8px;
+    margin: 20px;
+    padding: 14px 24px 16px;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+    transition: transform 0.3s, background 200ms; 
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+
+  .UpdateForm form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+  }
+  .UserInfo {
+    display: flex;
+   
+    justify-content: center; 
+    align-items: center;
+    text-align: left; 
+
+  }
+  
+  .UserInfo p {
+    font-size: 30px;
+    font-weight: bold;
+    padding: 20px;
+    margin: 0;
+  }
+  
+
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    10%, 30%, 50%, 70%, 90% {
+      transform: translateX(-10px);
+    }
+    20%, 40%, 60%, 80% {
+      transform: translateX(10px);
+    }
+  }
+  
+  .reincarButton {
+    color: white;
+    transition: color 0.5s ease;
+  }
+  
+  .shake {
+    animation: shake 2s;
+  }
+  
+  .shake.reincarButton {
+    color: limegreen;
   }

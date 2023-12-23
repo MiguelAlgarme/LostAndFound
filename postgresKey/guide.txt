@@ -1,0 +1,5 @@
+>Binary Path should go to the /postgresql/16/bin
+>Create another db.
+>Restore path and select the downloaded backup file.
+>Should work.
+-Do not restore on a postgre db (it will fail)
