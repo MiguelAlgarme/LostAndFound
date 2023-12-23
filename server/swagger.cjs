@@ -9,7 +9,7 @@ const options = {
     info: {
       title: 'Documentation',
       version: '1.0.0',
-      description: 'Lost and Found App for the students of USC',
+      description: 'Lost and Found App for anyone',
     },
     servers: [
       {

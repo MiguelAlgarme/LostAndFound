@@ -5,7 +5,7 @@ const db = pgp({
   user: 'postgres',
   port: 5432,
   password: 'admin',
-  database: 'postgres' //Different for you
+  database: 'TESTING2' //Different for you
 });
 
 
