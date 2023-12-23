@@ -1,0 +1,38 @@
+
+/*WARNING WARNING  WARNING 
+WARNING WARNING WARNING 
+WARNING WARNING WARNING 
+DO NOT EDIT THIS ANY FURTHER,
+THIS SOMEHOW AFFECTS THE NAVBAR!
+AND I'M TOO TIRED TO DEBUG IT!*/
+
+.userList {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 15px;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center; 
+  }
+  
+  .user-info {
+    flex: 1;
+  }
+  
+  button {
+    background-color: #ff0000;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+  }
+  
